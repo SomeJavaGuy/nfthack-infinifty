@@ -3,7 +3,7 @@ import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import "antd/dist/antd.css";
 import {  JsonRpcProvider, Web3Provider } from "@ethersproject/providers";
 import "./App.css";
-import { Row, Col, Button, Menu, Alert, List, Card, Switch as SwitchD } from "antd";
+import { Row, Col, Divider, Button, Menu, Alert, List, Card, Switch as SwitchD } from "antd";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { useUserAddress } from "eth-hooks";
@@ -12,7 +12,7 @@ import { Header, Account, Faucet, Ramp, Contract, GasGauge, ThemeSwitch, Address
 import { Transactor } from "./helpers";
 import { formatEther, parseEther } from "@ethersproject/units";
 //import Hints from "./Hints";
-import { Hints, ExampleUI, Subgraph } from "./views"
+import { Hints, Subgraph, ContractDetail } from "./views"
 import { useThemeSwitcher } from "react-css-theme-switcher";
 import { INFURA_ID, DAI_ADDRESS, DAI_ABI, NETWORK, NETWORKS } from "./constants";
 
@@ -136,6 +136,54 @@ function App(props) {
   console.log("📟 SetPurpose events:",setPurposeEvents)
 
 
+  class FileInput extends React.Component {
+    constructor(props) {
+      super(props);
+      this.handleSubmit = this.handleSubmit.bind(this);
+      this.fileInput = React.createRef();
+    }
+    handleSubmit(event) {
+      event.preventDefault();
+      alert(
+        `Selected file - ${this.fileInput.current.files[0].name}`
+      );
+    }
+    render() {
+      return (
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            <br />Select file to mint:<br /><br />
+            <input type="file" ref={this.fileInput} />
+          </label>
+          <br /><br />
+          <button type="submit">Create</button>
+        </form>
+      );
+    }
+  }
+
+
+  const [image, setImage] = React.useState("");
+  const imageRef = React.useRef(null);
+
+  function useDisplayImage() {
+    const [result, setResult] = React.useState("");
+
+    function uploader(e) {
+      const imageFile = e.target.files[0];
+
+      const reader = new FileReader();
+      reader.addEventListener("load", (e) => {
+        setResult(e.target.result);
+      });
+
+      reader.readAsDataURL(imageFile);
+    }
+
+    return { result, uploader };
+  }
+
+  const { result, uploader } = useDisplayImage();
 
 // buyermints
 
@@ -284,22 +332,13 @@ console.log("🤗 balance:",balance)
 
         <Menu style={{ textAlign:"center" }} selectedKeys={[route]} mode="horizontal">
           <Menu.Item key="/">
-            <Link onClick={()=>{setRoute("/")}} to="/">YourContract</Link>
+            <Link onClick={()=>{setRoute("/")}} to="/">Home</Link>
           </Menu.Item>
-          <Menu.Item key="/yourcollectibles">
-            <Link onClick={()=>{setRoute("/yourcollectibles")}} to="/yourcollectibles">YourCollectibles</Link>
+          <Menu.Item key="/create">
+            <Link onClick={()=>{setRoute("/create")}} to="/create">Mint</Link>
           </Menu.Item>
-          <Menu.Item key="/hints">
-            <Link onClick={()=>{setRoute("/hints")}} to="/hints">Hints</Link>
-          </Menu.Item>
-          <Menu.Item key="/exampleui">
-            <Link onClick={()=>{setRoute("/exampleui")}} to="/exampleui">ExampleUI</Link>
-          </Menu.Item>
-          <Menu.Item key="/mainnetdai">
-            <Link onClick={()=>{setRoute("/mainnetdai")}} to="/mainnetdai">Mainnet DAI</Link>
-          </Menu.Item>
-          <Menu.Item key="/subgraph">
-            <Link onClick={()=>{setRoute("/subgraph")}} to="/subgraph">Subgraph</Link>
+          <Menu.Item key="/contract">
+            <Link onClick={()=>{setRoute("/contract")}} to="/contract">Contract</Link>
           </Menu.Item>
         </Menu>
 
@@ -311,6 +350,7 @@ console.log("🤗 balance:",balance)
                 and give you a form to interact with it locally
             */}
 
+            {/*
             <Contract
               name="YourContract"
               signer={userProvider.getSigner()}
@@ -318,7 +358,47 @@ console.log("🤗 balance:",balance)
               address={address}
               blockExplorer={blockExplorer}
             />
+            */}
 
+            <div style={{border:"0", padding:16, width:400, margin:"auto",marginTop:64,marginBottom:64}}>
+            
+            <img width="360" src='/images/Logo.png' alt="" />
+            <br /><br />
+            <Button type="primary">
+              Buy
+            </Button>
+            <Divider />
+
+            <img width="360" src='/images/45ebf1ee781a0acb5f1ce01b86f44aad.jpg' alt="" />
+            <br /><br />
+            <Button type="primary">
+              Buy
+            </Button>
+            <Divider />
+
+            <img width="360" src='/images/408fb1cd82e2414696988aa537b9049e.jpg' alt="" />
+            <br /><br />
+            <Button type="primary">
+              Buy
+            </Button>
+            <Divider />
+
+            <img width="360" src='/images/89040dedeb3c7ab88ce5c56a4002f068.jpg' alt="" />
+            <br /><br />
+            <Button type="primary">
+              Buy
+            </Button>
+            <Divider />
+
+            <img width="360" src='/images/qCQxj.jpg' alt="" />
+            <br /><br />
+            <Button type="primary">
+              Buy
+            </Button>
+            <Divider />
+            <Button>Load More...</Button>
+
+            </div>
 
             { /* uncomment for a second contract:
             <Contract
@@ -341,6 +421,30 @@ console.log("🤗 balance:",balance)
             />
             */ }
           </Route>
+
+          <Route path="/create">
+          <div style={{border:"1px solid #cccccc", padding:16, width:400, margin:"auto",marginTop:64,marginBottom:64}}>
+            <br />
+            Select a file to mint:<br />
+            <br />
+          <input
+            type="file"
+            onChange={(e) => {
+              setImage(e.target.files[0]);
+              uploader(e);
+            }}
+          /><br />
+          {result && <img width="360" ref={imageRef} src={result} alt="" />}
+
+          <div style={{marginTop:8}}>
+            <Button type="primary" onClick={event =>  window.location.href='/contract'}>
+              Continue
+            </Button>
+          </div>
+
+        </div>
+          </Route>
+
 
           <Route path="/yourcollectibles">
             <div style={{ width:640, margin: "auto", marginTop:32, paddingBottom:32 }}>
@@ -399,8 +503,8 @@ console.log("🤗 balance:",balance)
               price={price}
             />
           </Route>
-          <Route path="/exampleui">
-            <ExampleUI
+          <Route path="/contract">
+            <ContractDetail
               address={address}
               userProvider={userProvider}
               mainnetProvider={mainnetProvider}
@@ -454,7 +558,7 @@ console.log("🤗 balance:",balance)
          {faucetHint}
       </div>
 
-      {/* 🗺 Extra UI like gas price, eth price, faucet, and support: */}
+      {/* 🗺 Extra UI like gas price, eth price, faucet, and support: 
        <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
          <Row align="middle" gutter={[4, 4]}>
            <Col span={8}>
@@ -484,7 +588,7 @@ console.log("🤗 balance:",balance)
            <Col span={24}>
              {
 
-               /*  if the local provider has a signer, let's show the faucet:  */
+               //*  if the local provider has a signer, let's show the faucet:  
                faucetAvailable ? (
                  <Faucet localProvider={localProvider} price={price} ensProvider={mainnetProvider}/>
                ) : (
@@ -494,6 +598,7 @@ console.log("🤗 balance:",balance)
            </Col>
          </Row>
        </div>
+       */}
 
     </div>
   );

@@ -3,10 +3,9 @@ pragma solidity >=0.6.0 <0.9.0;
 
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol"; //https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/Ownable.sol
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract YourContract is ERC721, Ownable {
+contract YourContract is ERC721 {
 
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIds;
