@@ -366,6 +366,9 @@ console.log("🤗 balance:",balance)
             <br /><br />
             <Button type="primary">
               Buy
+            </Button>&nbsp;
+            <Button type="primary">
+              Place a Bid
             </Button>
             <Divider />
 
@@ -373,6 +376,9 @@ console.log("🤗 balance:",balance)
             <br /><br />
             <Button type="primary">
               Buy
+            </Button>&nbsp;
+            <Button type="primary">
+              Place a Bid
             </Button>
             <Divider />
 
@@ -380,6 +386,9 @@ console.log("🤗 balance:",balance)
             <br /><br />
             <Button type="primary">
               Buy
+            </Button>&nbsp;
+            <Button type="primary">
+              Place a Bid
             </Button>
             <Divider />
 
@@ -387,6 +396,9 @@ console.log("🤗 balance:",balance)
             <br /><br />
             <Button type="primary">
               Buy
+            </Button>&nbsp;
+            <Button type="primary">
+              Place a Bid
             </Button>
             <Divider />
 
@@ -394,6 +406,9 @@ console.log("🤗 balance:",balance)
             <br /><br />
             <Button type="primary">
               Buy
+            </Button>&nbsp;
+            <Button type="primary">
+              Place a Bid
             </Button>
             <Divider />
             <Button>Load More...</Button>
